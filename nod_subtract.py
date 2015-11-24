@@ -1,13 +1,14 @@
 import os
 import fnmatch
 import pickle
+from embed_shell import ipsh
 
 import numpy as np
 import matplotlib.pyplot as mpl
 from scipy.interpolate import griddata
 
 from astropy.io import fits
-import jFits
+#import jFits
 
 from leech import bpm
 from leech import dewarp
@@ -128,6 +129,7 @@ def nod_subtract(side, directory='../../data/sat/',
                 nod_to_use=this_nod-1 #for odd numbers of nods
 
             #subtract the nod
+            ipsh()
             print 'subtract the nod'
             image-=nods[nod_to_use]
 

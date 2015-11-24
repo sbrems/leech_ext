@@ -5,7 +5,7 @@ import matplotlib.pyplot as mpl
 from leech import *
 from leech import bpm as bpm0 
 from leech import background as background0
-import jFits
+#import jFits
 
 def find_star(side, directory='../../data/sat/',outdirectory='../../processed_data/sat/'):
     #/////////////////////////////////////////////////////////
