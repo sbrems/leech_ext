@@ -4,8 +4,8 @@ from leech.xreg import xreg
 from leech.combine_frames import combine_frames
 from leech.annular_PCA import annular_PCA
 
-#find_star(0,directory='/home/jstone/Research/LEECH/data/test/sat/',
-#            outdirectory='/home/jstone/Research/LEECH/crunched/test/processed_data/sat/')
+find_star(0,directory='/disk1/brems/131024/KapAnd/sat/',
+            outdirectory='/disk1/brems/131024/KapAnd/processed_data/sat/')
 
 #nod_subtract(0,directory='/home/jstone/Research/LEECH/data/test/sat/',
 #               pickle_dir='/home/jstone/Research/LEECH/crunched/test/processed_data/sat/',
@@ -21,5 +21,5 @@ from leech.annular_PCA import annular_PCA
 #                   raw_dir='/home/jstone/Research/LEECH/data/test/sat/',
 #                   date='150105')
 
-annular_PCA(0,150,150,1,0,directory='/home/jstone/Research/LEECH/crunched/test/processed_data/sat/cxsxbcponlm/SX_0/',
-                          outdir='/home/jstone/Research/LEECH/crunched/test/processed_data/sat/PCA/SX_0/')
+#annular_PCA(0,150,150,1,0,directory='/home/jstone/Research/LEECH/crunched/test/processed_data/sat/cxsxbcponlm/SX_0/',
+#                          outdir='/home/jstone/Research/LEECH/crunched/test/processed_data/sat/PCA/SX_0/')
