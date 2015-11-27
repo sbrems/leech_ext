@@ -1,7 +1,6 @@
 import os
 import fnmatch
 import pickle
-#from embed_shell import ipsh
 
 import numpy as np
 import matplotlib.pyplot as mpl
@@ -17,7 +16,17 @@ from leech import fix_pix
 def nod_subtract(side, directory='../../data/sat/', 
                       pickle_dir='../../processed_data/sat/',
                       outdirectory='../../processed_data/sat/bcponlm/'):
-
+    #check if folders exist and create
+    for director in [directory,pickle_dir,outdirectory,outdirectory+'SX/',outdirectory+'DX/']:
+        if not os.path.exists(director):
+            os.makedirs(director)
+    #check folders are empty and delete old files
+    for director in [outdirectory+'SX/',outdirectory+'DX/']:
+        for the_file in os.listdir(director):
+            file_path = os.path.join(director, the_file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+            #elif os.path.isdir(file_path): shutil.rmtree(file_path) #del also subfolders
     X_DIM=1024
     Y_DIM=1024
 
@@ -79,15 +88,14 @@ def nod_subtract(side, directory='../../data/sat/',
     #/////////////////////////////////////////////////////////
     print 'Make Nod Images'
     for h in xrange(n_nods):
-        print h
+        print '\r Nod %i of %i'%(h,n_nods-1)
         nod_scratch=[]
-        for k in xrange(nod_beginnings[h], nod_ends[h]):
+        for k in xrange(nod_beginnings[h], nod_ends[h]+1):
             nod_scratch.append(fits.open(directory+filenames[k])[0].data[0,:,:])
-        if nod_ends[h]-nod_beginnings[h] == 0: 
-            nods.append(nod_scratch)
-        else: 
-            nods.append(np.median(nod_scratch, axis=0))
-
+        #if nod_ends[h]-nod_beginnings[h] == 0: 
+        #    nods.append(np.array(nod_scratch)) #not needed and gives wrong dim
+        nods.append(np.median(nod_scratch, axis=0))
+    print '\n'
     #/////////////////////////////////////////////////////////
     #do nod subtraction, overscan subtraction, pad, crop, and bin in sequence
     #/////////////////////////////////////////////////////////
@@ -108,11 +116,11 @@ def nod_subtract(side, directory='../../data/sat/',
                                                  np.array(Kx).T,np.array(Ky).T)
     print 'Subtract Nods'
     for h in xrange(n_files):
-        print h
-
+        print 'Subtracting image %i of %i '%(h,n_files-1)
         #get the image
-        print 'get im'
-        image=fits.open(directory+filenames[h])[0].data[0,:,:]
+        print 'get image'
+        image=(fits.open(directory+filenames[h])[0].data[0,:,:]).astype(float)
+        #change if cubes are used
 
         #determine which nod to subtract
         print 'determine which nod to subtract'
@@ -123,13 +131,16 @@ def nod_subtract(side, directory='../../data/sat/',
         if this_nod != -1:
             if this_nod % 2 == 1: 
                 nod_to_use=this_nod-1
-            if this_nod % 2 == 0: 
+            elif this_nod % 2 == 0: 
                 nod_to_use=this_nod+1
-            if (n_nods % 2 == 1) and (this_nod == n_nods-1): 
-                nod_to_use=this_nod-1 #for odd numbers of nods
+            elif (n_nods % 2 == 1) and (this_nod == n_nods-1): 
+                nod_to_use=this_nod-1 #for odd numbers of nods,last nod
 
             #subtract the nod
-#            ipsh()
+
+#            if h== 290:
+#                print 'Debugging...'
+#                ipdb.set_trace()
             print 'subtract the nod'
             image-=nods[nod_to_use]
 

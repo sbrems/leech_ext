@@ -1914,7 +1914,8 @@ class mpfit:
 
         for j in range(n):
             r[j:n,j] = r[j,j:n]
-        x = numpy.diagonal(r)
+        x = numpy.diagonal(r).copy()
+#        x.setflags(write=True) #for some reason diag returns write protected
         wa = qtb.copy()
 
         # Eliminate the diagonal matrix d using a givens rotation
@@ -2274,7 +2275,7 @@ class mpfit:
 
         if self.debug:
             print 'Entering calc_covar...'
-        if numpy.rank(rr) != 2:
+        if numpy.ndim(rr) != 2:
             print 'ERROR: r must be a two-dimensional matrix'
             return -1
         s = rr.shape

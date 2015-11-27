@@ -1,4 +1,4 @@
-import numpy as np
+wimport numpy as np
 from leech import rot
 
 def annular_PCA_by_lintrick( nod_beam, x_cen, y_cen, n_PCA, side):

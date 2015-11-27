@@ -10,7 +10,10 @@ import datetime
 def annular_PCA(nod_beam, x_cen, y_cen, n_PCA, side, 
                             directory='processed_data/cxsxbcponlm/SX_0/',
                             outdir='processed_data/PCA/SX_0/'):
-
+    #create folders
+    for director in [directory,outdir]:
+        if not os.path.exists(director):
+            os.makedirs(director)
     side={0:'S',1:'D'}[side]
 
     #////////////////////////////////////////////////////////
@@ -150,8 +153,8 @@ def annular_PCA(nod_beam, x_cen, y_cen, n_PCA, side,
         #median combine and save
         sub_mask_2d=sub_mask.reshape(Y_DIM,X_DIM) 
         combined_median[sub_mask_2d]=np.median(data,axis=0)[sub_mask_2d] #only save the subtraction region, not the optimization region
-        print datetime.datetime.now()-before
+        print 'time elapesed:',datetime.datetime.now()-before
         before=datetime.datetime.now()
 
-    save_filename=outdir+'/median_annular_'+str(n_PCA)+'.fits'
+    save_filename=outdir+'median_annular_'+str(n_PCA)+'.fits'
     fits.writeto(save_filename,combined_median)

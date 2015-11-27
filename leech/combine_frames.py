@@ -9,8 +9,12 @@ def combine_frames(side, nod_number,
                    directory='../../processed_data/sat/xsxbcponlm/SX_0/',
                    raw_dir='../../data/sat/',
                    save_dir='../../processed_data/sat/cxsxbcponlm/SX_0/',
-                   date=None):
-    n_combine=20
+                   date=None,n_combine=10):
+    #make directories
+    for director in [directory,raw_dir,save_dir]:
+        if not os.path.exists(director):
+            os.makedirs(director)
+    print 'combine_frames'
     X_DIM=300
     Y_DIM=300
 
@@ -23,15 +27,15 @@ def combine_frames(side, nod_number,
 
     if (nod_number == 0) and (side == 0):
         save_PA_filename=save_dir+'/SX_0_PA.pkl'
-    if (nod_number == 1) and (side == 0):
+    elif (nod_number == 1) and (side == 0):
         save_PA_filename=save_dir+'/SX_1_PA.pkl'
-    if (nod_number == 0) and (side == 1):
+    elif (nod_number == 0) and (side == 1):
         save_PA_filename=save_dir+'/DX_0_PA.pkl'
-    if (nod_number == 1) and (side == 1):
+    elif (nod_number == 1) and (side == 1):
         save_PA_filename=save_dir+'/DX_1_PA.pkl'
 
     filenumbers=[f[22:27] for f in filenames]
-    print filenumbers
+#    print filenumbers
     n_images=len(filenumbers)
 
     #open raw data to get PAs
@@ -41,7 +45,7 @@ def combine_frames(side, nod_number,
         par_filename=raw_dir+'lm_'+date+'_'+filenumbers[h]+'.fits'
         header_image=fits.open(par_filename)[0]
         par_angle.append(header_image.header['LBT_PARA'])
-
+    print par_angle
     print 'done_PA'
     #time.sleep(5)#necessary?? JMS
 
